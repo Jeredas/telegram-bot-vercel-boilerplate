@@ -16,7 +16,13 @@ const app = express()
 const port = process.env.PORT || 4000;
 
 app.get('/', (req: any, res: { send: (arg0: string) => void; }) => {
-  res.send('Hello World!')
+  bot.launch()
+  res.send('Bot started')
+})
+
+app.get('/end', (req: any, res: { send: (arg0: string) => void; }) => {
+  bot.stop()
+  res.send('Bot started')
 })
 
 app.listen(port, () => {
@@ -158,5 +164,5 @@ bot.on(message('web_app_data'), (ctx) => {
 //dev mode
 ENVIRONMENT !== 'production' && development(bot);
 
-bot.launch()
+
 
