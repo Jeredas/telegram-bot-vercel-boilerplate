@@ -3,7 +3,7 @@ import {message} from 'telegraf/filters';
 import * as dotenv from 'dotenv';
 import { VercelRequest, VercelResponse } from '@vercel/node';
 import { development, production } from './core';
-
+import * as express from 'express';
 dotenv.config({path: './.env'});
 const BOT_TOKEN = process.env.BOT_TOKEN || '';
 const ENVIRONMENT = process.env.NODE_ENV || '';
@@ -122,3 +122,15 @@ bot.on(message('web_app_data'), (ctx) => {
 })
 //dev mode
 ENVIRONMENT !== 'production' && development(bot);
+
+
+const app = express()
+const port = process.env.PORT || 4000;
+
+app.get('/', (req: any, res: { send: (arg0: string) => void; }) => {
+  res.send('Hello World!')
+})
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
+})
