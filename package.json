@@ -11,6 +11,9 @@
     "dotenv-cli": "^7.4.2",
     "telegraf": "^4.16.3"
   },
+  "engines": {
+    "node": "20.12.2"
+  },
   "devDependencies": {
     "@types/debug": "^4.1.12",
     "@types/node": "20.12.2",
