@@ -4,10 +4,24 @@ import * as dotenv from 'dotenv';
 import { VercelRequest, VercelResponse } from '@vercel/node';
 import { development, production } from './core';
 import * as express from 'express';
+import { NewInvoiceParameters } from 'telegraf/typings/telegram-types';
+import { LabeledPrice } from 'telegraf/typings/core/types/typegram';
 dotenv.config({path: './.env'});
 const BOT_TOKEN = process.env.BOT_TOKEN || '';
 const ENVIRONMENT = process.env.NODE_ENV || '';
 const bot = new Telegraf(BOT_TOKEN);
+
+
+const app = express()
+const port = process.env.PORT || 4000;
+
+app.get('/', (req: any, res: { send: (arg0: string) => void; }) => {
+  res.send('Hello World!')
+})
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
+})
 
 const colors = [
   { name: 'Red', code: '#FF0000', emoji: '🟥' },
@@ -118,20 +132,28 @@ bot.command('color', (ctx) => {
 });
 
 bot.on(message('web_app_data'), (ctx) => {
-  console.log(ctx.message.web_app_data.data);
-})
+  let amount = 50;
+  const data = ctx.webAppData?.data as any
+  if(data.type === 'generate_payment'){
+    amount = data.amount
+  }
+  const price :LabeledPrice = {
+    label: 'GROM',
+    amount: amount
+  }
+
+  const invoice:NewInvoiceParameters = {
+    title: 'Стрижка и бритьё',
+    description: 'Оплатить стрижку',
+    payload: 'Internal payload',
+    provider_token: process.env.PROVIDER_TOKEN || '',
+    currency: 'BYN',
+    prices: [price]
+  }
+  ctx.sendInvoice(invoice);
+});
 //dev mode
 ENVIRONMENT !== 'production' && development(bot);
 
 bot.launch()
 
-const app = express()
-const port = process.env.PORT || 4000;
-
-app.get('/', (req: any, res: { send: (arg0: string) => void; }) => {
-  res.send('Hello World!')
-})
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
