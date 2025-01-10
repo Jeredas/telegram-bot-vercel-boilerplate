@@ -123,6 +123,7 @@ bot.on(message('web_app_data'), (ctx) => {
 //dev mode
 ENVIRONMENT !== 'production' && development(bot);
 
+bot.launch()
 
 const app = express()
 const port = process.env.PORT || 4000;
