@@ -13,7 +13,9 @@ const greeting = () => async (ctx: Context) => {
 
   const messageId = ctx.message?.message_id;
   const userName = `${ctx.message?.from.first_name} ${ctx.message?.from.last_name}`;
-
+ console.log(
+  'Got messa'
+ )
   if (messageId) {
     await replyToMessage(ctx, messageId, `Hello, ${userName}!`);
   }
