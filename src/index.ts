@@ -132,9 +132,11 @@ bot.command('color', (ctx) => {
 });
 
 bot.on(message('web_app_data'), (ctx) => {
-  console.log(ctx)
+  console.log(ctx.webAppData)
+  console.log(ctx.message.web_app_data)
+  ctx.message.web_app_data
   let amount = 50;
-  const data = ctx.webAppData?.data as any
+  const data = ctx.message.web_app_data as any
   if(data.type === 'generate_payment'){
     amount = data.amount
   }
